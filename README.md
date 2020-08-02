@@ -1,4 +1,10 @@
 # Fudamiku API
+
+[![Fork](https://img.shields.io/github/forks/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/fork)&nbsp; [![Star](https://img.shields.io/github/stars/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/star)&nbsp; [![Watches](https://img.shields.io/github/watchers/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/)&nbsp;
+
+## Description
+Fudamiku API adalah projek web service api yang dibuat untuk menyediakan resource data dan kebutuhan fitur authentikasi serta transaksi pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
+
 ![alt text](https://i.ibb.co/Zmv94q9/image.png)
 
 API ini berfungsi sebagai api fudamiku system yang mempunyai fitur:
