@@ -3,7 +3,7 @@
 [![Fork](https://img.shields.io/github/forks/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/fork)&nbsp; [![Star](https://img.shields.io/github/stars/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/star)&nbsp; [![Watches](https://img.shields.io/github/watchers/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/)&nbsp;
 
 ## Description
-Fudamiku API adalah projek web service api yang dibuat untuk menyediakan resource data dan kebutuhan fitur authentikasi serta transaksi pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
+Fudamiku API adalah projek web service api yang dibuat menggunakan Framework Laravel untuk menyediakan resource data dan kebutuhan fitur authentikasi serta transaksi pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
 
 ![alt text](https://i.ibb.co/Zmv94q9/image.png)
 
@@ -63,7 +63,7 @@ Website: www.abuazis.com
 | Ambil Data Bahan Makanan  | GET   | Yes |
 | Process Order   | POST   | Yes |
 | Process Transaction   | POST   | Yes |
-| Cancel Rekening   | POST   | Yes |
+| Cancel Order   | POST   | Yes |
 | Check History order   | GET   | Yes |
 
 # API Usage List
@@ -124,7 +124,7 @@ __Login User Account__
 ---
 ```
 Rute ini untuk melakukan validasi login.
-Pastikan kalian memasukan parameter keys, karena
+Pastikan kalian memasukan data user, karena
 kita tidak ingin validasi ini digunakan sembarangan orang.
 ```
 
@@ -161,8 +161,7 @@ __API Response__
 __Get Data Makanan__
 ---
 ```
-Rute ini untuk mendapatkan semua data makanan
-dari database.
+Rute ini untuk mendapatkan semua data makanan dari database.
 ```
 
 __URL String__
