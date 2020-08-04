@@ -22,7 +22,7 @@ class FoodSeeder extends Seeder
                 'price' => 20000,
                 'picture' => $faker->imageUrl,
                 'created_at' => date("Y-m-d H:i:s"),
-                'update_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ],
             [
                 'name' => "Martabak Telor/Manis",
@@ -31,7 +31,7 @@ class FoodSeeder extends Seeder
                 'price' => 35000,
                 'picture' => $faker->imageUrl,
                 'created_at' => date("Y-m-d H:i:s"),
-                'update_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ],
             [
                 'name' => "Nasi Goreng Omelet",
@@ -40,7 +40,7 @@ class FoodSeeder extends Seeder
                 'price' => 15000,
                 'picture' => $faker->imageUrl,
                 'created_at' => date("Y-m-d H:i:s"),
-                'update_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ],
             [
                 'name' => "Seblak Bandungz",
@@ -49,7 +49,7 @@ class FoodSeeder extends Seeder
                 'price' => 18000,
                 'picture' => $faker->imageUrl,
                 'created_at' => date("Y-m-d H:i:s"),
-                'update_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ],
         ]);
     }
