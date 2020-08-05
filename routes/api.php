@@ -21,6 +21,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
 
+    Route::prefix('user')->group(function() {
+        Route::get('/{id}', 'UserController@show');
+    });
+
     Route::prefix('foods')->group(function() {
         Route::get('/', 'FoodController@index');
         Route::get('/{id}', 'FoodController@show');

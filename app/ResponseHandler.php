@@ -7,13 +7,12 @@ use Illuminate\Http\Response;
 
 class ResponseHandler extends Model
 {
-    public function authenticate($status = 200, $message, $token, $user)
+    public function authenticate($status = 200, $message, $token)
     {
         return response()->json([
             'status' => $status,
             'message' => $message,
-            'token' => $token,
-            'user' => $user
+            'token' => $token
         ], Response::HTTP_OK);
     }
 
