@@ -57,7 +57,7 @@ class AuthController extends Controller
             $user = $this->user->create($input);
 
             $token = $user->createToken('nApp')->accessToken;
-            return $this->respHandler->authenticate(200, "Success Sign Up", $token);
+            return $this->respHandler->authenticate(200, "Success Sign Up", $token, new UserResource($user));
         }
         else {
             return $this->respHandler->exists("User");
@@ -81,7 +81,7 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($input['password'], $user->password)) {
                 $token = $user->createToken('nApp')->accessToken;
-                return $this->respHandler->authenticate(200, "Success Sign In", $token);
+                return $this->respHandler->authenticate(200, "Success Sign In", $token, new UserResource($user));
             }
             else {
                 return $this->respHandler->badCredential();

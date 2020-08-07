@@ -14,36 +14,52 @@ class FoodIngredientSeeder extends Seeder
     {
         DB::table('food_ingredients')->insert([
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Telur",
+                'food_id' => 1,
+                'name' => "Tahu",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Madu",
+                'food_id' => 1,
+                'name' => "Bawang",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
+                'food_id' => 1,
                 'name' => "Cabai Rawit",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Ayam",
+                'food_id' => 1,
+                'name' => "Aren",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Sawi",
+                'food_id' => 2,
+                'name' => "Tepung",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Lemon",
+                'food_id' => 2,
+                'name' => "Mentega",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Alpukat",
+                'food_id' => 2,
+                'name' => "Krim",
             ],
             [
-                'food_id' => App\Food::all()->random()->id,
-                'name' => "Es",
+                'food_id' => 2,
+                'name' => "Minyak",
+            ],
+            [
+                'food_id' => 3,
+                'name' => "Nasi",
+            ],
+            [
+                'food_id' => 3,
+                'name' => "Rempah",
+            ],
+            [
+                'food_id' => 3,
+                'name' => "Krim",
+            ],
+            [
+                'food_id' => 3,
+                'name' => "Minyak",
             ],
         ]);
     }
