@@ -1,61 +1,286 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Fudamiku API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+[![Fork](https://img.shields.io/github/forks/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/fork)&nbsp; [![Star](https://img.shields.io/github/stars/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/star)&nbsp; [![Watches](https://img.shields.io/github/watchers/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/)&nbsp;
 
-## About Laravel
+## Description
+Fudamiku API adalah projek web service api yang dibuat menggunakan Framework Laravel untuk menyediakan resource data dan kebutuhan fitur authentikasi serta transaksi pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![alt text](https://i.ibb.co/Zmv94q9/image.png)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+API ini berfungsi sebagai api fudamiku system yang mempunyai fitur:
+- Create User Account
+- Login User Account
+- Ambil Data Makanan
+- Ambil Data Bahan Makanan
+- Process Order & Transaction
+- Batalkan Order
+- Check History Order
+- Apikey System (Bearer Token)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Installation
+1. Pastikan kalian telah menginstall composer
+2. Lakukan clone projek ini
+   ```
+   https://github.com/abuazis/Fudamiku-Service-API.git
+   ```
+3. Install vendor laravel
+   ```
+   composer install
+   ```
+4. Buat database baru di MySQL/PostgreSQL dengan nama "fudamiku"
+5. Duplikat file ```.env.example``` menjadi ```.env```
+6. Setting info database kalian di ```.env```
+   ```php
+   DB_CONNECTION=<YOUR_DATABASE_CONNECTION>
+   DB_HOST=<YOUR_DATABASE_HOST>
+   DB_PORT=<YOUR_DATABASE_PORT>
+   DB_DATABASE=<YOUR_DATABASE_NAME>
+   DB_USERNAME=<YOUR_DATABASE_USERNAME>
+   DB_PASSWORD=<YOUR_DATABASE_PASSWORD>
+   ```
+6. Lakukan migrasi database kalian
+   ```
+   php artisan migrate
+   ```
+7. Lakukan generate passport key data
+   ```
+   php artisan passport:install
+   ```
 
-## Learning Laravel
+# API Creator 
+```
+Author: Abu Toyib Al Aziz
+Version: v1.0
+Website: www.abuazis.com
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# API Requirements
+| Features | Methods | Bearer Token |
+| :--------: | :--------: | :---------: |
+| Create Account   | POST   | No |
+| Login Account   | POST   | No |
+| Ambil Data Makanan   | GET   | Yes |
+| Ambil Data Bahan Makanan  | GET   | Yes |
+| Process Order   | POST   | Yes |
+| Process Transaction   | POST   | Yes |
+| Cancel Order   | POST   | Yes |
+| Check History order   | GET   | Yes |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# API Usage List
+__Create User Account__
+---
+```
+Rute ini berfungsi untuk membuat akun pengguna.
+Pastikan semua parameter diisikan.
+```
 
-## Laravel Sponsors
+| Methods | Parameter | Data Type |
+| :--------: | :--------: | :---------: |
+| POST   | name   | String |
+| POST   | email   | String |
+| POST   | password   | String |
+| POST   | password_confirmation   | String |
+| POST   | phone_number   | Number |
+| POST   | address   | String |
+| POST   | house_number   | String |
+| POST   | city   | String |
+| POST   | photo   | File |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+__URL String__
+```
+http://127.0.0.1:8000/api/auth/register
+```
 
-### Premium Partners
+__Code Backend__
+```php
+$input = $request->all();
+$user = $this->user->where('email', $input['email'])->first();
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+if (!$user) {
+    $input['uuid'] = Uuid::generate(4)->string;
+    $input['password'] = Hash::make($input['password']);
 
-## Contributing
+    if ($request->has('photo')) {
+        $input['path_photo'] = $this->fileManager->saveData($request->file('photo'), $input['name'], '/images/users/');
+        $input['photo'] = '/images/users/' . $this->fileManager->fileResult;
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    $user = $this->user->create($input);
 
-## Code of Conduct
+    $token = $user->createToken('nApp')->accessToken;
+    return $this->respHandler->authenticate(200, "Success Sign Up", $token, new UserResource($user));
+}
+else {
+    return $this->respHandler->exists("User");
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+__API Response__
 
-## Security Vulnerabilities
+![alt text](https://i.ibb.co/qWNHRgJ/image.png)
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+__Login User Account__
+---
+```
+Rute ini untuk melakukan validasi login.
+Pastikan kalian memasukan data user, karena
+kita tidak ingin validasi ini digunakan sembarangan orang.
+```
 
-## License
+| Methods | Parameter | Data Type |
+| :--------: | :--------: | :---------: |
+| POST   | email   | String |
+| POST   | password   | String |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+__URL String__
+```
+http://127.0.0.1:800/api/auth/login
+```
+
+__Code Backend__
+```php
+if ($user) {
+    if (Hash::check($input['password'], $user->password)) {
+        $token = $user->createToken('nApp')->accessToken;
+        return $this->respHandler->authenticate(200, "Success Sign In", $token, new UserResource($user));
+    }
+    else {
+        return $this->respHandler->badCredential();
+    }
+}
+else {
+    return $this->respHandler->notFound("Users");
+}
+```
+
+__API Response__
+
+![alt text](https://i.ibb.co/kBZcSXT/image.png)
+
+__Get Data Makanan__
+---
+```
+Rute ini untuk mendapatkan semua data makanan dari database.
+```
+
+__URL String__
+```
+http://127.0.0.1:8000/api/foods
+```
+
+__Code Backend__
+```php
+$foods = $this->food->with('foodIngredient')->get();
+
+if ($foods->count() > 0) {
+    return $this->respHandler->send(200, "Successfuly Get Foods", FoodResource::collection($foods));
+}
+else {
+    return $this->respHandler->notFound("Foods");
+}
+```
+
+__API Response__
+
+![alt text](https://i.ibb.co/WBt3pRj/image.png)
+
+__Process Order__
+---
+```
+Rute ini untuk melakukan order makanan yang dipilih.
+Pastikan bahwa parameter valid dan benar.
+```
+
+| Methods | Parameter | Data Type |
+| :--------: | :--------: | :---------: |
+| POST   | user_id   | Number |
+| POST   | food_id   | Number |
+| POST   | quantity   | Number |
+| POST   | status   | String |
+
+__URL String__
+```
+http://127.0.0.1:5000/api/orders
+```
+
+__Code Backend__
+```php
+if ($this->order->isExistsByUserId($userId)) {
+    $order = $this->order->where('user_id', $userId)->get();
+    return $this->respHandler->send(200, "Successfuly Get Order", OrderResource::collection($order));
+}
+else {
+    $this->respHandler->notFound("Order");
+}
+```
+
+__API Response__
+
+![alt text](https://i.ibb.co/k04jvQ8/image.png)
+
+__Cancel Order__
+---
+```
+Rute ini berfungsi untuk melakukan pembatalan order yang telah dibuat.
+Pastikan bahwa parameter status bernilai "Cancelled".
+```
+
+| Methods | Parameter | Data Type |
+| :--------: | :--------: | :---------: |
+| POST   | status   | String |
+
+__URL String__
+```
+http://127.0.0.1:5000/api/orders/{order_id}
+```
+
+__Code Backend__
+```php
+$order = $this->order->find($id);
+$updateStatus = $order->update(['status' => $request->status]);
+
+if ($updateStatus) {
+    return $this->respHandler->send(200, "Successfully Update Status Order");
+}
+else {
+    return $this->respHandler->internalError();
+}
+```
+
+__API Response__
+
+![alt text](https://i.ibb.co/Tcjg4tG/image.png)
+
+__Check History Order__
+---
+```
+Rute ini berfungsi untuk melihat history order berdasarkan user.
+```
+
+__URL String__
+```
+http://127.0.0.1:5000/api/orders/{user_id}
+```
+
+__Code Backend__
+```php
+if ($this->order->isExistsByUserId($userId)) {
+    $order = $this->order->where('user_id', $userId)->get();
+    return $this->respHandler->send(200, "Successfuly Get Order", OrderResource::collection($order));
+}
+else {
+    $this->respHandler->notFound("Order");
+}
+```
+
+__API Response__
+
+![alt text](https://i.ibb.co/crzCfCn/image.png)
+
+
+# Donations
+Bagi yang mau berbaik hati mendonasikan saldonya pada saya atas script ini, silahkan melakukan transfer ke rekening berikut:
+```
+Transfer Rekening => 5771095268 A/N Abu Toyib Al Aziz | Bank BCA
+```
