@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/// ROUTE FOR AUTHENTICATION
 Route::prefix('auth')->group(function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
@@ -21,10 +19,12 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware(['auth:api'])->group(function () {
 
+    /// ROUTE FOR USER
     Route::prefix('user')->group(function() {
         Route::get('/{id}', 'UserController@show');
     });
 
+    /// ROUTE FOR FOOD
     Route::prefix('foods')->group(function() {
         Route::get('/', 'FoodController@index');
         Route::get('/{id}', 'FoodController@show');
@@ -33,21 +33,23 @@ Route::middleware(['auth:api'])->group(function () {
         Route::delete('/{id}', 'FoodController@destroy');
     });
 
+    /// ROUTE FOR FOOD INGREDIENT
     Route::prefix('foods/ingredients')->group(function() {
-        Route::post('/', 'FoodIngredientController@store');
+        Route::get('/{id}', 'FoodIngredientController@show');
         Route::put('/{id}', 'FoodIngredientController@update');
         Route::delete('/{id}', 'FoodIngredientController@destroy');
     });
 
+    /// ROUTE FOR ORDER
     Route::prefix('orders')->group(function() {
-        Route::get('/{userId}', 'OrderController@show');
+        Route::get('/{userID}', 'OrderController@show');
         Route::post('/', 'OrderController@store');
         Route::put('/{id}', 'OrderController@updateStatus');
     });
 
+    /// ROUTE FOR TRANSACTION
     Route::prefix('transactions')->group(function () {
-        Route::get('/{orderId}', 'TransactionController@show');
-        Route::post('/', 'TransactionController@store');
+        Route::get('/{orderID}', 'TransactionController@show');
     });
 
 });

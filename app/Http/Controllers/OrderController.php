@@ -2,78 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\OrderResource;
 use App\Order;
+use App\Transaction;
 use App\ResponseHandler;
-use Illuminate\Http\Request;
 use Webpatser\Uuid\Uuid;
+use Illuminate\Http\Request;
+use App\Http\Resources\OrderResource;
 
 class OrderController extends Controller
 {
-    private $order;
     private $respHandler;
 
     public function __construct()
     {
-        $this->order = new Order();
         $this->respHandler = new ResponseHandler();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($userId)
+    public function show($userID)
     {
-        if ($this->order->isExistsByUserId($userId)) {
-            $order = $this->order->where('user_id', $userId)->get();
+        /// Check if user's order is exists
+        if (Order::where('user_id', $userID)->get()) {
+
+            /// Generate order and success response
+            $order = Order::where('user_id', $userID)->get();
             return $this->respHandler->send(200, "Successfuly Get Order", OrderResource::collection($order));
-        }
-        else {
-            $this->respHandler->notFound("Order");
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Order");
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $input['uuid'] = Uuid::generate(4);
+        /// Set and store new order data
+        $order = new Order;
+        $order->user_id = $request->user_id;
+        $order->food_id = $request->food_id;
+        $order->uuid = Uuid::generate(4)->string;
+        $order->quantity = $request->quantity;
+        $order->status = $request->status;
+        $order->save();
 
-        $createOrder = $this->order->create($input);
+        /// Set and store new transaction data
+        $transaction = new Transaction;
+        $transaction->order_id = $order->id;
+        $transaction->user_id = $request->user_id;
+        $transaction->uuid = Uuid::generate(4)->string;
+        $transaction->delivery_service = $request->delivery_service;
+        $transaction->tax = $request->tax;
+        $transaction->total_price = $request->total_price;
+        $transaction->save();
 
-        if ($createOrder) {
-            return $this->respHandler->send(200, "Successfully Create Order");
-        }
-        else {
-            return $this->respHandler->internalError();
-        }
+        /// Generate success response
+        return $this->respHandler->send(200, "Successfully Create Order");
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateStatus(Request $request, $id)
     {
-        $order = $this->order->find($id);
-        $updateStatus = $order->update(['status' => $request->status]);
+        /// Check if order id is exists
+        if (Order::find($id)) {
 
-        if ($updateStatus) {
+            /// Set new order status
+            $order = Order::find($id);
+            $order->update(['status' => $request->status]);
+
+            /// Generate success response
             return $this->respHandler->send(200, "Successfully Update Status Order");
-        }
-        else {
-            return $this->respHandler->internalError();
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Order");
         }
     }
 }

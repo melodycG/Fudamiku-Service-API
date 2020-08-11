@@ -24,15 +24,4 @@ class Order extends Model
     {
         return $this->belongsTo('App\Food');
     }
-
-    public function isExistsByUserId($userId)
-    {
-        $data = $this->where('user_id', $userId)->get();
-
-        if ($data) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

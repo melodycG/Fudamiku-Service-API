@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use Webpatser\Uuid\Uuid;
-use App\ResponseHandler;
-use App\FileManager;
 use App\User;
+use App\FileManager;
+use App\ResponseHandler;
+use Webpatser\Uuid\Uuid;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    private $user;
     private $respHandler;
     private $fileManager;
 
     public function __construct()
     {
-        $this->user = new User();
         $this->respHandler = new ResponseHandler();
         $this->fileManager = new FileManager();
     }
 
     public function register(Request $request)
     {
+        /// Validate all request
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|max:255|min:3',
             'email' => 'required|email|string',
@@ -38,57 +38,72 @@ class AuthController extends Controller
             'photo' => 'image|max:5000'
         ]);
 
+        /// Check if validation is fails
         if($validate->fails()) {
             return $this->respHandler->validateError($validate->errors());
         }
 
-        $input = $request->all();
-        $user = $this->user->where('email', $input['email'])->first();
+        /// Check if email hasn't registered
+        if (!User::where('email', $request->email)->first()) {
 
-        if (!$user) {
-            $input['uuid'] = Uuid::generate(4)->string;
-            $input['password'] = Hash::make($input['password']);
+            /// Create new user data
+            $user = User::create([
+                'uuid' => Uuid::generate(4)->string,
+                'name'=> $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'house_number' => $request->house_number,
+                'city' => $request->city,
+            ]);
 
+            /// Check if request has photo file
             if ($request->has('photo')) {
-                $input['path_photo'] = $this->fileManager->saveData($request->file('photo'), $input['name'], '/images/users/');
-                $input['photo'] = '/images/users/' . $this->fileManager->fileResult;
+                $this->fileManager->saveData($request->file('photo'), $user->name, '/images/users/');
+                $user->photo = '/images/users/' . $this->fileManager->fileResult;
             }
 
-            $user = $this->user->create($input);
+            /// Store user attribute model
+            $user->save();
 
+            /// Generate token and sucess response
             $token = $user->createToken('nApp')->accessToken;
             return $this->respHandler->authenticate(200, "Success Sign Up", $token, new UserResource($user));
-        }
-        else {
+
+        } else {
+            /// Generate user exists response
             return $this->respHandler->exists("User");
         }
     }
 
     public function login(Request $request)
     {
+        /// Validate login request
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
+        /// Check if validation is fails
         if($validate->fails()) {
             return $this->respHandler->validateError($validate->errors());
         }
 
-        $input = $request->all();
-        $user = $this->user->where('email', $input['email'])->first();
+        /// Declaring credentials data from request
+        $credentials = $request->only('email', 'password');
 
-        if ($user) {
-            if (Hash::check($input['password'], $user->password)) {
-                $token = $user->createToken('nApp')->accessToken;
-                return $this->respHandler->authenticate(200, "Success Sign In", $token, new UserResource($user));
-            }
-            else {
-                return $this->respHandler->badCredential();
-            }
-        }
-        else {
-            return $this->respHandler->notFound("Users");
+        /// Checking credentials data via api guard
+        if (Auth::guard('web')->attempt($credentials)) {
+
+            /// Generate token and success response
+            $user = User::where('email', $request->email)->first();
+            $token = $user->createToken('nApp')->accessToken;
+            return $this->respHandler->authenticate(200, "Success Sign In", $token, new UserResource($user));
+
+        } else {
+            // Generate bad credentials response
+            return $this->respHandler->badCredential();
         }
     }
 }

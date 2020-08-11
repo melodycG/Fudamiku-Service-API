@@ -6,101 +6,73 @@ use App\FoodIngredient;
 use App\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\FoodIngredientResource;
 
 class FoodIngredientController extends Controller
 {
-    private $foodIngredient;
     private $respHandler;
 
     public function __construct()
     {
-        $this->foodIngredient = new FoodIngredient();
         $this->respHandler = new ResponseHandler();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|min:4|max:255'
-        ]);
+        /// Check if food ingredient is exists
+        if (FoodIngredient::find($id)) {
 
-        if ($validate->fails()) {
-            return $this->respHandler->validateError($validate->errors());
-        }
+            /// Generate food and success response
+            $foodIngredient = FoodIngredient::find($id);
+            return $this->respHandler->send(200, "Successfuly Get Food Ingredient", new FoodIngredientResource($foodIngredient));
 
-        $input = $request->all();
-
-        if (!$this->foodIngredient->isExists($request->name)) {
-            $createData = $this->foodIngredient->create($input);
-
-            if ($createData) {
-                return $this->respHandler->send(200, "Successfully Create Food Ingredient");
-            }
-            else {
-                return $this->respHandler->internalError();
-            }
-        }
-        else {
-            return $this->respHandler->exists("Food Ingredient");
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $validate = Validator::make($request->all(), [
-            'name' => 'required|string|min:4|max:255'
-        ]);
-
-        if ($validate->fails()) {
-            return $this->respHandler->validateError($validate->errors());
-        }
-
-        $input = $request->all();
-
-        if ($this->foodIngredient->isExistsById($id)) {
-            $foodIngredient = $this->foodIngredient->find($id);
-            $updateData = $foodIngredient->update($input);
-
-            if ($updateData) {
-                return $this->respHandler->send(200, "Successfully Update Food Ingredient");
-            }
-            else {
-                return $this->respHandler->internalError();
-            }
-        }
-        else {
+        } else {
+            /// Generate not found response
             return $this->respHandler->notFound("Food Ingredient");
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function update(Request $request, $id)
+    {
+        /// Validate name request
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|string|min:4|max:255'
+        ]);
+
+        /// Check if validation is fails
+        if ($validate->fails()) {
+            return $this->respHandler->validateError($validate->errors());
+        }
+
+        if (FoodIngredient::find($id)) {
+
+            /// Set model attribute to request
+            $foodIngredient = FoodIngredient::find($id);
+            $foodIngredient->food_id = $request->food_id;
+            $foodIngredient->name = $request->name;
+            $foodIngredient->save();
+
+            /// Generate success response
+            return $this->respHandler->send(200, "Successfully Update Food Ingredient");
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Food Ingredient");
+        }
+    }
+
     public function destroy($id)
     {
-        if ($this->foodIngredient->isExistsById($id)) {
-            $foodIngredient = $this->foodIngredient->find($id);
-            $foodIngredient->delete();
-            return $this->respHandler->send(200, "Successfuly Delete Food");
-        }
-        else {
-            $this->respHandler->notFound("Food");
+        /// Check if food id is exists
+        if (FoodIngredient::find($id)) {
+
+            /// Deleting food data and generate success response
+            FoodIngredient::destroy($id);
+            return $this->respHandler->send(200, "Successfuly Delete Food Ingredient");
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Food Ingredient");
         }
     }
 }

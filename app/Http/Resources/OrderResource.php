@@ -21,7 +21,6 @@ class OrderResource extends JsonResource
             'uuid' => $this->uuid,
             'quantity' => $this->quantity,
             'status' => $this->status,
-            'user' => new UserResource($this->user),
             'food' => new FoodResource($this->food),
         ];
     }

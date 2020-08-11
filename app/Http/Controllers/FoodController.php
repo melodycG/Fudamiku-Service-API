@@ -2,51 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\ResponseHandler;
-use App\FileManager;
 use App\Food;
+use App\FileManager;
+use App\FoodIngredient;
+use App\ResponseHandler;
+use Illuminate\Http\Request;
 use App\Http\Resources\FoodResource;
 use Illuminate\Support\Facades\Validator;
 
 class FoodController extends Controller
 {
-    private $food;
     private $respHandler;
     private $fileManager;
 
     public function __construct()
     {
-        $this->food = new Food();
         $this->respHandler = new ResponseHandler();
         $this->fileManager = new FileManager();
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $foods = $this->food->with('foodIngredient')->get();
+        /// Get all food and ingredient data
+        $foods = Food::all();
 
+        /// Check if no one food found
         if ($foods->count() > 0) {
+            /// Generate success response
             return $this->respHandler->send(200, "Successfuly Get Foods", FoodResource::collection($foods));
-        }
-        else {
+        } else {
+            /// Generate not found response
             return $this->respHandler->notFound("Foods");
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        /// Validate all request
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|min:4|max:255',
             'score' => 'required',
@@ -55,56 +47,67 @@ class FoodController extends Controller
             'picture' => 'required|image|max:5000'
         ]);
 
+        /// Check if validation is fails
         if ($validate->fails()) {
             return $this->respHandler->validateError($validate->errors());
         }
 
-        $input = $request->all();
+        /// Check if food name isn't exists
+        if (!Food::where('name', $request->name)->first()) {
 
-        if (!$this->food->isExists($request->name)) {
-            $path = $this->fileManager->saveData($request->file('picture'), $request->name, '/images/foods/');
-            $input['picture'] = $path;
+            /// Set model attribute to request
+            $food = new Food;
+            $food->name = $request->name;
+            $food->score = $request->score;
+            $food->description = $request->description;
+            $food->price = $request->price;
 
-            $createData = $this->food->create($input);
+            /// Save picture file and set path
+            $this->fileManager->saveData($request->file('picture'), $request->name, '/images/foods/');
+            $food->picture = '/images/foods/' . $this->fileManager->fileResult;
+            $food->save();
 
-            if ($createData) {
-                return $this->respHandler->send(200, "Successfully Create Food");
+            /// Declare variable array container
+            $foodIngredient = [];
+
+            /// Mapping food ingredient each to variable above
+            foreach($request->ingredients as $ingredient) {
+                $foodIngredient[] = new FoodIngredient([
+                    'food_id' => $request->food_id,
+                    'name' => $ingredient,
+                ]);
             }
-            else {
-                return $this->respHandler->internalError();
-            }
-        }
-        else {
+
+            /// Save to food ingredient model
+            $food->foodIngredient()->saveMany($foodIngredient);
+
+            /// Generate success response
+            return $this->respHandler->send(200, "Successfully Create Food");
+
+        } else {
+            /// Generate food exists response
             return $this->respHandler->exists("Food");
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        if ($this->food->isExistsById($id)) {
-            $food = $this->food->find($id);
+        /// Check if food id is exists
+        if (Food::find($id)) {
+
+            /// Generate food and success response
+            $food = Food::find($id);
             return $this->respHandler->send(200, "Successfuly Get Food", new FoodResource($food));
-        }
-        else {
-            $this->respHandler->notFound("Food");
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Food");
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
+        /// Validate all request
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|min:4|max:255',
             'score' => 'required',
@@ -113,50 +116,69 @@ class FoodController extends Controller
             'picture' => 'image|max:5000'
         ]);
 
+        /// Check if validation is fails
         if ($validate->fails()) {
             return $this->respHandler->validateError($validate->errors());
         }
 
-        $input = $request->all();
+        /// Check if food id is exists
+        if (Food::find($id)) {
 
-        if ($this->food->isExistsById($id)) {
-            $food = $this->food->find($id);
+            /// Set model attribute to request
+            $food = Food::find($id);
+            $food->name = $request->name;
+            $food->score = $request->score;
+            $food->description = $request->description;
+            $food->price = $request->price;
 
+            /// Check if has picture image
             if ($request->has('picture')) {
-                $this->fileManager->removeData($food->picture);
-                $path = $this->fileManager->saveData($request->file('picture'), $request->name, '/images/foods/');
-                $input['picture'] = $path;
+                $this->fileManager->saveData($request->file('picture'), $request->name, '/images/foods/');
+                $food->picture = '/images/foods/' . $this->fileManager->fileResult;
             }
 
-            $updateData = $food->update($input);
+            /// Update food attribute model
+            $food->save();
 
-            if ($updateData){
-                return $this->respHandler->send(200, "Successfuly Update Food");
+            /// Declare variable array container
+            $foodIngredient = [];
+
+            /// Mapping food ingredient each to variable above
+            foreach($request->ingredients as $ingredient) {
+                $foodIngredient[] = new FoodIngredient([
+                    'food_id' => $request->food_id,
+                    'name' => $ingredient,
+                ]);
             }
-            else {
-                return $this->respHandler->internalError();
-            }
-        }
-        else {
-            $this->respHandler->notFound("Food");
+
+            /// Save to food ingredient model
+            $food->foodIngredient()->saveMany($foodIngredient);
+
+            /// Generate success response
+            return $this->respHandler->send(200, "Successfully Update Food");
+            
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Food");
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        if ($this->food->isExistsById($id)) {
-            $food = $this->food->find($id);
-            $food->delete();
+        /// Check if food id is exists
+        if (Food::find($id)) {
+
+            /// Deleting food picture file
+            $food = Food::find($id);
+            $this->fileManager->removeData($food->picture);
+
+            /// Deleting food data and generate success response
+            Food::destroy($id);
             return $this->respHandler->send(200, "Successfuly Delete Food");
-        }
-        else {
-            $this->respHandler->notFound("Food");
+
+        } else {
+            /// Generate not found response
+            return $this->respHandler->notFound("Food");
         }
     }
 }

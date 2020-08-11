@@ -10,11 +10,6 @@ class Transaction extends Model
 
     protected $fillable = ['order_id', 'user_id', 'uuid', 'delivery_service', 'tax', 'total_price'];
 
-    public function payment()
-    {
-        return $this->hasOne('App\Payment');
-    }
-
     public function order()
     {
         return $this->belongsTo('App\Order');
@@ -23,16 +18,5 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
-    }
-
-    public function isExistsByOrderId($orderId)
-    {
-        $data = $this->where('order_id', $orderId)->get();
-
-        if ($data) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
