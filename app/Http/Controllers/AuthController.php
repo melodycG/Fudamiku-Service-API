@@ -67,7 +67,7 @@ class AuthController extends Controller
             /// Store user attribute model
             $user->save();
 
-            /// Generate token and sucess response
+            /// Generate token and success response
             $token = $user->createToken('nApp')->accessToken;
             return $this->respHandler->authenticate(200, "Success Sign Up", $token, new UserResource($user));
 

@@ -23,7 +23,8 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'house_number' => $this->house_number,
             'city' => $this->city,
-            'photo' => url('/') . $this->photo
+            'photo' => url('/') . $this->photo,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

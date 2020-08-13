@@ -22,6 +22,7 @@ class TransactionResource extends JsonResource
             'delivery_service' => $this->delivery_service,
             'tax' => $this->tax,
             'total_price' => $this->total_price,
+            'updated_at' => $this->updated_at,
             'order' => new OrderResource($this->order)
         ];
     }
