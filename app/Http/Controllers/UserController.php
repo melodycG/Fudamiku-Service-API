@@ -7,6 +7,7 @@ use App\FileManager;
 use App\ResponseHandler;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
