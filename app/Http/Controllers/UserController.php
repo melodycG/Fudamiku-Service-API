@@ -57,8 +57,10 @@ class UserController extends Controller
             /// Check if request has photo file
             if ($request->has('photo')) {
 
-                /// Remove old photo file
-                $this->fileManager->removeData($user->photo);
+                /// Remove old photo file if exists
+                if (file_exists(public_path() . '/images/users/' . $user->photo)) {
+                    $this->fileManager->removeData($user->photo);
+                }
 
                 /// Store new photo file
                 $this->fileManager->saveData($request->file('photo'), $user->name, '/images/users/');

@@ -156,7 +156,7 @@ class FoodController extends Controller
 
             /// Generate success response
             return $this->respHandler->send(200, "Successfully Update Food");
-            
+
         } else {
             /// Generate not found response
             return $this->respHandler->notFound("Food");
