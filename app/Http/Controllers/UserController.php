@@ -6,6 +6,7 @@ use App\User;
 use App\FileManager;
 use App\ResponseHandler;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
 {
