@@ -3,18 +3,18 @@
 [![Fork](https://img.shields.io/github/forks/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/fork)&nbsp; [![Star](https://img.shields.io/github/stars/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/star)&nbsp; [![Watches](https://img.shields.io/github/watchers/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/)&nbsp;
 
 ## Description
-Fudamiku API adalah projek web service api yang dibuat menggunakan Framework Laravel untuk menyediakan resource data dan kebutuhan fitur authentikasi serta transaksi pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
+Fudamiku API adalah projek web service api yang dibuat untuk menyediakan resource data dan kebutuhan fitur authentikasi dan transaksi yang sudah terintegrasi dengan payment gateway Midtrans pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter. 
 
 ![alt text](https://i.ibb.co/Zmv94q9/image.png)
 
-API ini berfungsi sebagai api fudamiku system yang mempunyai fitur:
+API ini berfungsi sebagai back-end api aplikasi fudamiku yang mempunyai fitur:
 - Create User Account
 - Login User Account
-- Ambil Data Makanan
-- Ambil Data Bahan Makanan
+- CRUD Resource Food
 - Process Order & Transaction
-- Batalkan Order
+- Cancel Order
 - Check History Order
+- Payment Method (Credit Card & Midtrans)
 - Apikey System (Bearer Token)
 
 # Installation
@@ -38,14 +38,19 @@ API ini berfungsi sebagai api fudamiku system yang mempunyai fitur:
    DB_USERNAME=<YOUR_DATABASE_USERNAME>
    DB_PASSWORD=<YOUR_DATABASE_PASSWORD>
    ```
-6. Lakukan migrasi database kalian
+7. Lakukan migrasi database kalian
    ```
    php artisan migrate
    ```
-7. Lakukan generate passport key data
+8. Lakukan generate passport key data
    ```
    php artisan passport:install
    ```
+9. Setting client key dan server key midtrans kalian
+   ```php
+   MIDTRANS_SERVER_KEY=<YOUR_SERVER_KEY>
+   MIDTRANS_CLIENT_KEY=<YOUR_CLIENT_KEY>
+   MIDTRANS_BASE_URL=https://api.sandbox.midtrans.com/v2
 
 # API Creator 
 ```
