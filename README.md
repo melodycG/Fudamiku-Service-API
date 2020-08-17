@@ -3,7 +3,7 @@
 [![Fork](https://img.shields.io/github/forks/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/fork)&nbsp; [![Star](https://img.shields.io/github/stars/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/star)&nbsp; [![Watches](https://img.shields.io/github/watchers/abuazis/Fudamiku-Service-API?style=social)](https://github.com/abuazis/Fudamiku-Service-API/)&nbsp;
 
 ## Description
-Fudamiku API adalah projek web service api yang dibuat untuk menyediakan resource data dan kebutuhan fitur authentikasi dan transaksi yang sudah terintegrasi dengan payment gateway Midtrans pada aplikasi Fudamiku yang nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter. 
+Fudamiku API adalah projek web service api yang dibuat untuk menyediakan resource data dan kebutuhan fitur authentikasi dan transaksi yang sudah terintegrasi dengan payment gateway Midtrans. Dan nantinya akan diconsume oleh projek aplikasi mobile Fudamiku menggunakan Flutter.
 
 ![alt text](https://i.ibb.co/Zmv94q9/image.png)
 
