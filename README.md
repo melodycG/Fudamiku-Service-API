@@ -14,7 +14,7 @@ API ini berfungsi sebagai back-end api aplikasi fudamiku yang mempunyai fitur:
 - Process Order & Transaction
 - Cancel Order
 - Check History Order
-- Payment Method (Credit Card & Midtrans)
+- Payment Method (Credit Card & Gopay)
 - Apikey System (Bearer Token)
 
 # Installation
