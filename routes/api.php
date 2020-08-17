@@ -20,12 +20,13 @@ Route::prefix('auth')->group(function () {
 Route::middleware(['auth:api'])->group(function () {
 
     /// ROUTE FOR USER
-    Route::prefix('user')->group(function() {
+    Route::prefix('user')->group(function () {
         Route::get('/{id}', 'UserController@show');
+        Route::put('/{id}', 'UserController@update');
     });
 
     /// ROUTE FOR FOOD
-    Route::prefix('foods')->group(function() {
+    Route::prefix('foods')->group(function () {
         Route::get('/', 'FoodController@index');
         Route::get('/{id}', 'FoodController@show');
         Route::post('/', 'FoodController@store');
@@ -34,14 +35,14 @@ Route::middleware(['auth:api'])->group(function () {
     });
 
     /// ROUTE FOR FOOD INGREDIENT
-    Route::prefix('foods/ingredients')->group(function() {
+    Route::prefix('foods/ingredients')->group(function () {
         Route::get('/{id}', 'FoodIngredientController@show');
         Route::put('/{id}', 'FoodIngredientController@update');
         Route::delete('/{id}', 'FoodIngredientController@destroy');
     });
 
     /// ROUTE FOR ORDER
-    Route::prefix('orders')->group(function() {
+    Route::prefix('orders')->group(function () {
         Route::get('/{userID}', 'OrderController@show');
         Route::post('/', 'OrderController@store');
         Route::put('/{id}', 'OrderController@updateStatus');
