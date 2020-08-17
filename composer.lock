@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "144950ebf36681323e861fdc87fc4c45",
+    "content-hash": "2b22c520cbbf0e06ff86d6dd23222d93",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1706,6 +1706,55 @@
                 "server"
             ],
             "time": "2020-07-01T11:33:50+00:00"
+        },
+        {
+            "name": "midtrans/midtrans-php",
+            "version": "2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Midtrans/midtrans-php.git",
+                "reference": "94cdca1eba636b75ec3bdcf338e303068f14025c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Midtrans/midtrans-php/zipball/94cdca1eba636b75ec3bdcf338e303068f14025c",
+                "reference": "94cdca1eba636b75ec3bdcf338e303068f14025c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.*",
+                "psy/psysh": "0.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Midtrans\\": "Midtrans/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andri Setiawan",
+                    "email": "andri.setiawan@veritrans.co.id"
+                },
+                {
+                    "name": "Alvin Litani",
+                    "email": "alvin.litani@veritrans.co.id"
+                },
+                {
+                    "name": "Ismail Faruqi",
+                    "email": "ismail.faruqi@veritrans.co.id"
+                }
+            ],
+            "description": "PHP Wrapper for Midtrans Payment API.",
+            "homepage": "https://midtrans.com",
+            "time": "2020-07-21T06:42:34+00:00"
         },
         {
             "name": "monolog/monolog",

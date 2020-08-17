@@ -53,4 +53,13 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/{orderID}', 'TransactionController@show');
     });
 
+    /// ROUTE FOR MIDTRANS
+    Route::prefix('midtrans')->group(function () {
+        Route::get('/token', 'MidtransController@getCardToken');
+        Route::get('/status/{orderID}', 'MidtransController@getStatus');
+        Route::post('/credit', 'MidtransController@chargeCreditCard');
+        Route::post('/gopay', 'MidtransController@chargeGopay');
+        Route::post('/cancel/{orderID}', 'MidtransController@cancelTransaction');
+    });
+    
 });

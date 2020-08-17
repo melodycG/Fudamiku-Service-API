@@ -16,6 +16,7 @@
         "laravel/framework": "^7.22.2",
         "laravel/passport": "^9.3",
         "laravel/tinker": "^2.0",
+        "midtrans/midtrans-php": "^2.3",
         "spatie/flysystem-dropbox": "^1.2",
         "webpatser/laravel-uuid": "3.0"
     },
