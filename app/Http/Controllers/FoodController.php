@@ -168,10 +168,6 @@ class FoodController extends Controller
         /// Check if food id is exists
         if (Food::find($id)) {
 
-            /// Deleting food picture file
-            $food = Food::find($id);
-            $this->fileManager->removeData($food->picture);
-
             /// Deleting food data and generate success response
             Food::destroy($id);
             return $this->respHandler->send(200, "Successfuly Delete Food");
