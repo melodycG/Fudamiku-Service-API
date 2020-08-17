@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\FileManager;
 use App\ResponseHandler;
+use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
